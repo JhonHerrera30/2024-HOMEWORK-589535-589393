@@ -148,7 +148,7 @@ public class DiaDia {
 		if(this.partita.getGiocatore().getBorsa().hasAttrezzo(nomeAttrezzo)) {
 			Attrezzo a= this.partita.getGiocatore().getBorsa().getAttrezzo(nomeAttrezzo);
 			if(this.partita.getStanzaCorrente().addAttrezzo(a))
-				console.mostraMessaggio("hai posato "+a+" nella stanza  f f"+this.partita.getStanzaCorrente());
+				console.mostraMessaggio("hai posato "+a+" nella stanza "+this.partita.getStanzaCorrente());
 			else
 				console.mostraMessaggio("Non c'è abbastanza spazio per posare l'attrezzo in questa stanza");
 		}
