@@ -72,7 +72,6 @@ public class DiaDia {
 		{	
 			if(this.partita.getStanzaCorrente().getNumeroAttrezzi()==0)
 				this.console.mostraMessaggio("Questa stanza non ha attrezzi ");
-			
 			else 
 				this.prendi(comandoDaEseguire.getParametro());
 
