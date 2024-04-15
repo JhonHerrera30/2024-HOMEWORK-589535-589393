@@ -86,4 +86,7 @@ public class Borsa {
 		return this.numeroAttrezzi;
 	}
 	
+	 public String getAttrezzi(int i) {
+	        return attrezzi[i].toString();
+	    }
 }
