@@ -35,10 +35,10 @@ public class DiaDia {
 	private Labirinto labirinto;
 	private IOConsole console;
 
-	public DiaDia() {
+	public DiaDia(IOConsole console) {
 		this.labirinto= new Labirinto();
 		this.partita = new Partita(labirinto);
-		this.console=new IOConsole();
+		this.console=console;
 	}
 
 	public void gioca() {
@@ -141,11 +141,13 @@ public class DiaDia {
 
 	private void posa(String nomeAttrezzo) {
 		if(nomeAttrezzo==null) {
-			console.mostraMessaggio("Quale attrezzo vuoi posare ?");
+			console.mostraMessaggio("Quale attrezzo tra i segueti vuoi posare ?");
+			for(int i=0; i<this.partita.getGiocatore().getBorsa().getNumeroAttrezzi(); i++)
+				this.console.mostraMessaggio(this.partita.getGiocatore().getBorsa().getAttrezzi(i));
 			nomeAttrezzo=this.console.leggiRiga();
 		}
 		if(this.partita.getGiocatore().getBorsa().hasAttrezzo(nomeAttrezzo)) {
-			Attrezzo a= this.partita.getGiocatore().getBorsa().getAttrezzo(nomeAttrezzo);
+			Attrezzo a= this.partita.getGiocatore().getBorsa().removeAttrezzo(nomeAttrezzo);
 			if(this.partita.getStanzaCorrente().addAttrezzo(a))
 				console.mostraMessaggio("hai posato "+a+" nella stanza "+this.partita.getStanzaCorrente());
 			else
@@ -163,7 +165,8 @@ public class DiaDia {
 	}
 
 	public static void main(String[] argc) {
-		DiaDia gioco = new DiaDia();
+		IOConsole console= new IOConsole();
+		DiaDia gioco = new DiaDia(console);
 		gioco.gioca();
 	}
 }
