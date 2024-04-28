@@ -8,7 +8,7 @@ public class Giocatore {
 	
 	public Giocatore() {
 		this.cfu=CFU_INIZIALI;
-		borsa= new Borsa();
+		this.borsa= new Borsa();
 	}
 	
 	public int getCfu() {
@@ -21,5 +21,15 @@ public class Giocatore {
 	
 	public Borsa getBorsa() {
 		return this.borsa;
+	}
+	
+	public String toString() {
+		StringBuilder risultato= new StringBuilder();
+		risultato.append("CFU attuali: "+this.cfu);
+		risultato.append("\nStrumenti posseduti:\n");
+		for(int i=0; i<this.getBorsa().getNumeroAttrezzi(); i++) {
+			risultato.append(this.getBorsa().getAttrezzi(i)+ "\n");
+		}
+		return risultato.toString();
 	}
 }

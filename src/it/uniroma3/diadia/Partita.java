@@ -17,7 +17,7 @@ public class Partita {
 	private Labirinto labirinto;
 	private Giocatore giocatore;
 	private Stanza stanzaCorrente;
-	
+	 
 	public Partita(Labirinto labirinto){
 		this.labirinto=labirinto;
 		this.stanzaCorrente=this.labirinto.getStanzaIniziale();
@@ -48,7 +48,7 @@ public class Partita {
 	 */
 	public boolean isFinita() {
 		return finita || vinta() || (giocatore.getCfu() == 0);
-	}
+	} 
 
 	/**
 	 * Imposta la partita come finita
@@ -66,6 +66,7 @@ public class Partita {
 		this.stanzaCorrente = stanzaCorrente;
 	}
 	
-	
-
+	public boolean giocatoreIsVivo() {
+		return this.getGiocatore().getCfu()!=0;
+	}
 }
