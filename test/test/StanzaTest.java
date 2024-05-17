@@ -23,7 +23,7 @@ public class StanzaTest {
 		stanza.addAttrezzo(attrezzo);
 		assertNotNull(stanza.getAttrezzo("attrezzo"));
 	}
-	
+	 
 	@Test
 	public void testGetAttrezzo_stanzaNonVuota_Assente() {
 		Stanza stanza= new Stanza("stanza");

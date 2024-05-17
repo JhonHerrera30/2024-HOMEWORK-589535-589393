@@ -34,6 +34,26 @@ public class Partita {
 		return this.giocatore;
 	}
 	
+	public Stanza getStanzaCorrente() {
+		return stanzaCorrente;
+	}
+	
+	public void setLabirinto(Labirinto labirinto) {
+		this.labirinto = labirinto;
+	}
+	
+	public void setStanzaCorrente(Stanza stanzaCorrente) {
+		this.stanzaCorrente = stanzaCorrente;
+	}
+	
+	/** 
+	 * Imposta la partita come finita
+	 *
+	 */
+	public void setFinita() {
+		this.finita = true;
+	}
+	
 	/**
 	 * Restituisce vero se e solo se la partita e' stata vinta
 	 * @return vero se partita vinta
@@ -50,22 +70,6 @@ public class Partita {
 		return finita || vinta() || (giocatore.getCfu() == 0);
 	} 
 
-	/**
-	 * Imposta la partita come finita
-	 *
-	 */
-	public void setFinita() {
-		this.finita = true;
-	}
-
-	public Stanza getStanzaCorrente() {
-		return stanzaCorrente;
-	}
-
-	public void setStanzaCorrente(Stanza stanzaCorrente) {
-		this.stanzaCorrente = stanzaCorrente;
-	}
-	
 	public boolean giocatoreIsVivo() {
 		return this.getGiocatore().getCfu()!=0;
 	}

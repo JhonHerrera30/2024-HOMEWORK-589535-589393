@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class PartitaTest {
@@ -17,14 +18,18 @@ public class PartitaTest {
 	
 	@Before
 	public void setUp() {
-		this.labirinto= new Labirinto();
+		this.labirinto= new LabirintoBuilder()
+				.addStanzaIniziale("start")
+				.addStanzaVincente("end")
+				.addAdiacenza("start", "end", "nord")
+				.getLabirinto();
 		this.partita= new Partita(labirinto);
 	}
 	
 	
 	@Test
 	public void testGetStanzaCorrente() {
-		assertNotNull(partita.getStanzaCorrente());
+		assertEquals(partita.getStanzaCorrente().getNome(),"start");
 	}
 	
 

@@ -2,6 +2,7 @@ package it.uniroma3.diadia;
  
 
 import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.comandi.Comando;
 import it.uniroma3.diadia.comandi.FabbricaDiComandi;
 import it.uniroma3.diadia.comandi.FabbricaDiComandiFisarmonica;
@@ -33,13 +34,19 @@ public class DiaDia {
 	//static final private String[] elencoComandi = {"vai", "aiuto", "fine","prendi","posa"};
 
 	private Partita partita;
-	private Labirinto labirinto;
+	//private Labirinto labirinto;
 	private IO console;
 
-	public DiaDia(IO io) {
-		this.labirinto= new Labirinto();
+	/*public DiaDia(IO io) {
+		this.labirinto = new Labirinto();
 		this.partita = new Partita(labirinto);
-		this.console=io;
+		this.console = io;
+	}
+	*/
+	
+	public DiaDia(Labirinto labirinto, IO io) {
+		this.partita = new Partita(labirinto);
+		this.console = io;
 	}
 
 	public void gioca() {
@@ -64,7 +71,7 @@ public class DiaDia {
 		if (this.partita.vinta())
 
 		this.console.mostraMessaggio("Hai vinto!");
-		if (!this.partita.giocatoreIsVivo())
+		if (!this.partita.giocatoreIsVivo()) 
 
 		this.console.mostraMessaggio("Hai esaurito i CFU...");
 
@@ -73,7 +80,24 @@ public class DiaDia {
 
 	public static void main(String[] argc) {
 		IO io= new IOConsole();
-		DiaDia gioco = new DiaDia(io);
+		Labirinto labirinto=new LabirintoBuilder()
+                .addStanzaIniziale("atrio")
+                .addAttrezzo("lanterna", 3)
+                .addStanzaVincente("biblioteca")
+                .addStanzaBuia("n10", "lanterna")
+                .addAttrezzo("chiave", 1)
+                .addStanzaBloccata("campus", "chiave", "sud")
+                .addStanzaMagica("n11")
+                .addAttrezzo("diamante", 2)
+                .addAdiacenza("atrio", "biblioteca", "nord")
+                .addAdiacenza("atrio", "n10", "est")
+                .addAdiacenza("n10", "atrio", "ovest")
+                .addAdiacenza("atrio", "campus", "ovest")
+                .addAdiacenza("campus", "atrio", "est")
+                .addAdiacenza("campus", "n11", "sud")
+                .addAdiacenza("n11", "campus", "nord")
+                .getLabirinto();
+		DiaDia gioco = new DiaDia(labirinto,io);
 		gioco.gioca();
 
 	}

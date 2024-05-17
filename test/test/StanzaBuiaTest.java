@@ -21,7 +21,7 @@ public class StanzaBuiaTest {
 	@Test
 	public void testGetDescrizione_SenzaLuce() {
 		assertEquals("Qui c'è buio pesto", stanza.getDescrizione());
-	}
+	} 
 	
 	@Test
 	public void testGetDescrizione_ConLuce() {

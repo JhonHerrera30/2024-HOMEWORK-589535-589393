@@ -7,7 +7,7 @@ public class StanzaBuia extends Stanza{
 	public StanzaBuia(String nome, String luce) {
 		super(nome);
 		this.luce= luce;
-	}
+	} 
 	
 	@Override
 	public String getDescrizione() {

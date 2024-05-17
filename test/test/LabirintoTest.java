@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
+import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
 
 public class LabirintoTest {
@@ -15,13 +16,17 @@ public class LabirintoTest {
 	
 	@Before
 	public void setUp() {
-		labirinto= new Labirinto();
-		stanza =new Stanza("stanza");
+		this.labirinto= new LabirintoBuilder()
+				.addStanzaIniziale("start")
+				.addStanzaVincente("end")
+				.addAdiacenza("start", "end", "nord")
+				.getLabirinto();
+		this.stanza =new Stanza("stanza");
 	}
 
 	@Test
 	public void testGetStanzaIniziale() {
-		assertNotNull(this.labirinto.getStanzaIniziale());
+		assertEquals(this.labirinto.getStanzaIniziale().getNome(),"start");
 	}
 
 	@Test
@@ -33,7 +38,7 @@ public class LabirintoTest {
 
 	@Test
 	public void testGetStanzaVincente() {
-		assertNotNull(this.labirinto.getStanzaVincente());
+		assertEquals(this.labirinto.getStanzaVincente().getNome(),"end");
 	}
 
 }
