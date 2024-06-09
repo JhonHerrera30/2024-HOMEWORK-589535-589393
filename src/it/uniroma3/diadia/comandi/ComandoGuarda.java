@@ -2,13 +2,11 @@ package it.uniroma3.diadia.comandi;
 
 import java.util.SortedSet;
 
-import it.uniroma3.diadia.IO;
+
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 
-public class ComandoGuarda implements Comando{
-
-	private IO console;
+public class ComandoGuarda extends AbstractComando{
 	
 	@Override
 	public void esegui(Partita partita) {
@@ -21,17 +19,14 @@ public class ComandoGuarda implements Comando{
 			for(Attrezzo attrezzo : AttrezziOrdinati) {
 				this.console.mostraMessaggio(attrezzo.toString());
 			}
+			if(partita.getStanzaCorrente().hasPersonaggio())
+				this.console.mostraMessaggio("C'è "+ partita.getStanzaCorrente().getPersonaggio().getNome() +" nella stanza");
 		}
 	} 
  
 	@Override
 	public void setParametro(String parametro) {
 		return;
-		
-	}
-	@Override
-	public void setIO(IO io) {
-		this.console=io;
 		
 	}
 

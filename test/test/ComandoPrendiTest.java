@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.IOSimulator;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.comandi.ComandoPrendi;
 
 public class ComandoPrendiTest {
@@ -34,26 +34,21 @@ public class ComandoPrendiTest {
 	
 	
 	@Before
-	public void setUp() {
-		this.labirinto= new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addAttrezzo("attrezzo", 5)
-				.addStanzaVincente("end")
-				.addAdiacenza("start", "end", "direzione")
-				.getLabirinto();
+	public void setUp() throws Exception {
+		this.labirinto= Labirinto.newBuilder("labirinto1.txt").getLabirinto();
 		this.partita= new Partita(labirinto);
 		this.prendi= new ComandoPrendi();   
-		this.prendi.setIO(new IOConsole());
+		this.prendi.setIO(new IOConsole(new Scanner(System.in)));
 	}
 
 	@Test
 	public void testEsegui_attrezzoPresente() {
-		assertTrue(partita.getStanzaCorrente().hasAttrezzo("attrezzo"));
-		assertFalse(partita.getGiocatore().getBorsa().hasAttrezzo("attrezzo"));
-		prendi.setParametro("attrezzo");
+		assertTrue(partita.getStanzaCorrente().hasAttrezzo("spada"));
+		assertFalse(partita.getGiocatore().getBorsa().hasAttrezzo("spada"));
+		prendi.setParametro("spada");
 		prendi.esegui(partita);
-		assertTrue(partita.getGiocatore().getBorsa().hasAttrezzo("attrezzo"));
-		assertFalse(partita.getStanzaCorrente().hasAttrezzo("attrezzo"));
+		assertTrue(partita.getGiocatore().getBorsa().hasAttrezzo("spada"));
+		assertFalse(partita.getStanzaCorrente().hasAttrezzo("spada"));
 	}
 	
 	@Test
@@ -63,7 +58,7 @@ public class ComandoPrendiTest {
 	}
 	
 	@Test
-	public void testEseguiEasy() {
+	public void testEseguiEasy() throws Exception {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add("prendi spada");
 		cmd.add("vai nord");

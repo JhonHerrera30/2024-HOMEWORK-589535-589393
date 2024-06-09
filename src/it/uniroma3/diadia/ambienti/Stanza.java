@@ -1,10 +1,14 @@
 package it.uniroma3.diadia.ambienti;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import it.uniroma3.diadia.attrezzi.Attrezzo;
+import it.uniroma3.diadia.personaggi.AbstractPersonaggio;
 
 /**
  * Classe Stanza - una stanza in un gioco di ruolo.
@@ -24,8 +28,9 @@ public class Stanza {
 	
 	private String nome;
     private Set<Attrezzo> attrezzi;
-    private int numeroAttrezzi;
-    private Map<String,Stanza> stanzeAdiacenti;
+    //private int numeroAttrezzi;
+    private Map<Direzione,Stanza> stanzeAdiacenti;
+    private AbstractPersonaggio npc;
     //private int numeroStanzeAdiacenti;
 	//private String[] direzioni;
     
@@ -36,10 +41,11 @@ public class Stanza {
     public Stanza(String nome) {
         this.nome = nome;
         //this.numeroStanzeAdiacenti = 0;
-        this.numeroAttrezzi = 0;
+        //this.numeroAttrezzi = 0;
         //this.direzioni = new String[NUMERO_MASSIMO_DIREZIONI];
         this.stanzeAdiacenti = new HashMap<>();
         this.attrezzi = new HashSet<>();
+        this.npc=null;
     }
 
     /**
@@ -48,7 +54,7 @@ public class Stanza {
      * @param direzione direzione in cui sara' posta la stanza adiacente.
      * @param stanza stanza adiacente nella direzione indicata dal primo parametro.
      */
-    public void impostaStanzaAdiacente(String direzione, Stanza stanza) {
+    public void impostaStanzaAdiacente(Direzione direzione, Stanza stanza) {
     	this.stanzeAdiacenti.put(direzione,stanza);
     }
 
@@ -56,7 +62,7 @@ public class Stanza {
      * Restituisce la stanza adiacente nella direzione specificata
      * @param direzione
      */
-	public Stanza getStanzaAdiacente(String direzione) {
+	public Stanza getStanzaAdiacente(Direzione direzione) {
         return this.stanzeAdiacenti.get(direzione);
 	}
 
@@ -83,7 +89,7 @@ public class Stanza {
     public Set<Attrezzo> getAttrezzi() {
         return this.attrezzi;
     }
-
+    
     /**
      * Mette un attrezzo nella stanza.
      * @param attrezzo l'attrezzo da mettere nella stanza.
@@ -92,6 +98,22 @@ public class Stanza {
     public boolean addAttrezzo(Attrezzo attrezzo) {
        return this.attrezzi.add(attrezzo);
     }
+    
+    public AbstractPersonaggio getPersonaggio() {
+    	return this.npc;
+    }
+    
+    public void setPersonaggio(AbstractPersonaggio personaggio) {
+    	this.npc = personaggio;
+    }
+    
+    public boolean hasPersonaggio() {
+    	if(this.npc==null)
+    		return false;
+    	else
+    		return true;
+    }
+
 
    /**
 	* Restituisce una rappresentazione stringa di questa stanza,
@@ -102,8 +124,8 @@ public class Stanza {
     	StringBuilder risultato = new StringBuilder();
     	risultato.append(this.nome);
     	risultato.append("\nUscite:\n");
-    	Set<String> direzioni = this.stanzeAdiacenti.keySet();
-    	for(String direzione : direzioni) {
+    	Set<Direzione> direzioni = this.stanzeAdiacenti.keySet();
+    	for(Direzione direzione : direzioni) {
     		risultato.append(direzione + "->"+ this.stanzeAdiacenti.get(direzione).getNome()+ "\n");
     	}
     	risultato.append("Attrezzi nella stanza: ");
@@ -153,13 +175,13 @@ public class Stanza {
 	}
 
 
-	public Set<String> getDirezioni() {
-		Set<String> direzioni = this.stanzeAdiacenti.keySet();
+	public Set<Direzione> getDirezioni() {
+		Set<Direzione> direzioni = this.stanzeAdiacenti.keySet();
 	    return direzioni;
     }
 	
 	public int getNumeroAttrezzi() {
-		return numeroAttrezzi;
+		return this.attrezzi.size();
 	}
 	
 	@Override
@@ -170,7 +192,15 @@ public class Stanza {
 	
 	@Override
 	public int hashCode() {
-		return this.nome.hashCode()+this.numeroAttrezzi+this.attrezzi.hashCode()+this.stanzeAdiacenti.hashCode();
+		return this.nome.hashCode()+this.getNumeroAttrezzi()+this.attrezzi.hashCode()+this.stanzeAdiacenti.hashCode();
+	}
+	
+	public List<Stanza> getStanzaAdiacenteOrdinatoPerNumeroDiAttrezzi() {
+		ComparatorePerNumeroDiAttrezzi cmp = new ComparatorePerNumeroDiAttrezzi();
+		List<Stanza> stanzeOrdinate = new ArrayList<>();
+		stanzeOrdinate.addAll(this.stanzeAdiacenti.values());
+		Collections.sort(stanzeOrdinate,cmp);
+		return stanzeOrdinate;
 	}
 	
 	

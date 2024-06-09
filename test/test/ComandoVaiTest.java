@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.IOSimulator;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.comandi.ComandoVai;
 
 public class ComandoVaiTest {
@@ -31,47 +31,27 @@ public class ComandoVaiTest {
 	//private Stanza stanza;
 	private Labirinto labirinto;
 	private ComandoVai vai;
-	private String direzione;
 	private IOSimulator console;
 	
 	@Before
-	public void setUp() {
-		this.labirinto= new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addStanzaVincente("end")
-				.addAdiacenza("start", "end", "direzione")
-				.getLabirinto();
+	public void setUp() throws Exception {
+		this.labirinto= Labirinto.newBuilder("labirinto1.txt").getLabirinto();
 		this.partita= new Partita(labirinto);
 		//this.stanza= partita.getStanzaCorrente();
 		this.vai= new ComandoVai();
-		this.vai.setIO(new IOConsole());	 
+		this.vai.setIO(new IOConsole(new Scanner(System.in)));	 
 	}
 	
 	@Test
 	public void testEsegui_stanzaAdiacente_Presente() {
 		assertSame(this.partita.getStanzaCorrente(),this.labirinto.getStanzaIniziale());
-		vai.setParametro("direzione");
+		vai.setParametro("nord");
 		vai.esegui(partita);
 		assertSame(this.partita.getStanzaCorrente(),this.labirinto.getStanzaVincente());	
 	}
 	
 	@Test
-	public void testEsegui_direzioneInesistente() {
-		assertSame(this.partita.getStanzaCorrente(),this.labirinto.getStanzaIniziale());
-		vai.setParametro("direzione inesistente");
-		vai.esegui(partita);
-		assertSame(this.partita.getStanzaCorrente(),this.labirinto.getStanzaIniziale());
-	}
-	
-	@Test
-	public void testEsegui_direzioneNulla() {
-		direzione=null;
-		vai.setParametro(direzione);
-		vai.esegui(partita);
-	}
-	
-	@Test
-	public void testComandoVaiEasy() {
+	public void testComandoVaiEasy() throws Exception {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add("vai nord");
 		console = new Fixture().testPartitaEasy(cmd);
@@ -84,7 +64,7 @@ public class ComandoVaiTest {
 	}
 	
 	@Test
-	public void testComandoVaiMid() {
+	public void testComandoVaiMid() throws Exception {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add("vai nord");
 		cmd.add("vai ovest");

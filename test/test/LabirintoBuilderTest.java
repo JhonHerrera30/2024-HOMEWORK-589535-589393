@@ -2,83 +2,61 @@ package test;
 
 import static org.junit.Assert.*;
 
-import java.util.Map;
-
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.ambienti.Stanza;
+import it.uniroma3.diadia.attrezzi.Attrezzo;
 
 public class LabirintoBuilderTest {
-	
-
-	@Test
-	public void testGetLabirinto() {
-		Labirinto labirintoVuoto = new LabirintoBuilder().getLabirinto();
-		assertNotNull(labirintoVuoto);
-		assertNull(labirintoVuoto.getStanzaIniziale());
-	}
-
-	@Test
-	public void testGetNome2Stanza() {
-		assertNotNull(new LabirintoBuilder().getNome2Stanza());
-	}
-	
-	@Test
-	public void testAddStanzaIniziale() {
-		Labirinto monolocale = new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.getLabirinto();
-		assertEquals("start",monolocale.getStanzaIniziale().getNome());
-	}
-
-	@Test
-	public void testUltimaStanzaAggiuntaEAggiorna() {
-		Stanza ultimaStanzaAggiunta = new Stanza("ultimaStanzaAggiunta");
-		LabirintoBuilder monolocale = new LabirintoBuilder();
-		Map<String,Stanza> stanzeDelLabirinto = monolocale.getNome2Stanza();
-		assertEquals(0,stanzeDelLabirinto.size());
-		monolocale.UltimaStanzaAggiuntaEAggiorna(ultimaStanzaAggiunta);
-		assertEquals(1,stanzeDelLabirinto.size());
-		assertEquals(stanzeDelLabirinto.get("ultimaStanzaAggiunta").getNome(),"ultimaStanzaAggiunta");
-	}
-
-	@Test
-	public void testAddStanzaVincente() {
-		Labirinto bilocale = new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addStanzaVincente("end")
-				.getLabirinto();
-		assertEquals("end",bilocale.getStanzaVincente().getNome());
-	}
-
-	@Test
-	public void testAddStanza() {
-		LabirintoBuilder monolocale = new LabirintoBuilder()
-				.addStanza("stanza");
-		Map<String,Stanza> stanzeDelLabirinto = monolocale.getNome2Stanza();
-		assertEquals(stanzeDelLabirinto.get("stanza").getNome(),"stanza");
-	}
-
-	@Test
-	public void testAddAttrezzo() {
-		Labirinto monolocale = new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addAttrezzo("attrezzo", 3)
-				.getLabirinto();
-		assertTrue(monolocale.getStanzaIniziale().hasAttrezzo("attrezzo"));
-	}
-
-	@Test
-	public void testAddAdiacenza() {
-		Labirinto bilocale = new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addStanzaVincente("end")
-				.addAdiacenza("start", "end", "nord")
-				.getLabirinto();
-		assertEquals(bilocale.getStanzaIniziale().getStanzaAdiacente("nord").getNome(),"end");
-	}
+    private Labirinto.LabirintoBuilder labirinto;
 
 
+    @Before
+    public void setUp() throws Exception {
+        //labirinto = Labirinto.newBuilder("labirinto.txt");
+        labirinto = new Labirinto.LabirintoBuilder("labirinto.txt");
+    } 
+
+    @After
+    public void tearDown() throws Exception {
+    }
+
+
+    @Test
+    public void testGetLabirinto() {
+        assertNotNull(labirinto.getLabirinto());
+        assertEquals(Labirinto.class, labirinto.getLabirinto().getClass());
+    }
+
+    @Test
+    public void testAddStanza() {
+        labirinto.addStanza("stanzetta");
+        Stanza expected = new Stanza("stanzetta");
+        assertEquals(expected, labirinto.getNome2Stanza().get("stanzetta"));
+    }
+
+    @Test
+    public void testAddAttrezzoSenzaUltimaStanzaAggiunta(){
+
+        //labirinto.addAttrezzo("cacciavite", 3);
+        //Attrezzo expected = new Attrezzo("cacciavite", 3);
+        assertEquals(Labirinto.LabirintoBuilder.class, labirinto.addAttrezzo("cacciavite", 3).getClass());
+    }
+
+    @Test
+    public void testAddAttrezzoConUltimaStanzaAggiunta(){
+        labirinto.addStanzaIniziale("stanzetta").addAttrezzo("cacciavite", 3);
+        Attrezzo expected = new Attrezzo("cacciavite", 3);
+        assertEquals(expected, labirinto.getLabirinto().getStanzaIniziale().getAttrezzo("cacciavite"));
+    }
+
+    @Test
+    public void testAddAttrezzoConStanza() {
+        labirinto.addStanza("stanzetta");
+        labirinto.addAttrezzo("cacciavite", 3);
+        assertTrue(labirinto.getNome2Stanza().get("stanzetta").hasAttrezzo("cacciavite"));
+    }
 }

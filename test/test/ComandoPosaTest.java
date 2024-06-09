@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +13,6 @@ import it.uniroma3.diadia.IOConsole;
 import it.uniroma3.diadia.IOSimulator;
 import it.uniroma3.diadia.Partita;
 import it.uniroma3.diadia.ambienti.Labirinto;
-import it.uniroma3.diadia.ambienti.LabirintoBuilder;
 import it.uniroma3.diadia.attrezzi.Attrezzo;
 import it.uniroma3.diadia.comandi.ComandoPosa;
 import it.uniroma3.diadia.giocatore.Borsa;
@@ -38,16 +38,12 @@ public class ComandoPosaTest {
 	
 	
 	@Before
-	public void setUp() {
-		this.labirinto= new LabirintoBuilder()
-				.addStanzaIniziale("start")
-				.addStanzaVincente("end")
-				.addAdiacenza("start", "end", "direzione")
-				.getLabirinto();
+	public void setUp() throws Exception{
+		this.labirinto= Labirinto.newBuilder("labirinto1.txt").getLabirinto();
 		this.partita = new Partita(labirinto);
 		this.attrezzo = new Attrezzo("attrezzo", 5);
 		this.posa = new ComandoPosa();   
-		this.posa.setIO(new IOConsole());
+		this.posa.setIO(new IOConsole(new Scanner(System.in)));
 		this.borsa = partita.getGiocatore().getBorsa();
 	}
 	@Test
@@ -70,7 +66,7 @@ public class ComandoPosaTest {
 	}
 	
 	@Test
-	public void testComandoPosaEasy() {
+	public void testComandoPosaEasy() throws Exception {
 		List<String> cmd = new ArrayList<String>();
 		cmd.add("prendi spada");
 		cmd.add("posa spada");
