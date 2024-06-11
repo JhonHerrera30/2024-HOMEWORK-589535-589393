@@ -1,0 +1,11 @@
+Stanze:atrio,biblioteca,n10,n11,n9
+Magica:
+Buia:
+Bloccata:
+Inizio:atrio
+Vincente:biblioteca
+Mago:
+Cane:
+Strega:
+Attrezzi:mazza 10 n10,teschio 2 n9
+Uscite:atrio nord n10,n10 sud atrio,n10 est n11,n11 ovest n10,n10 ovest n9,n9 est n10,n9 nord biblioteca, biblioteca sud n9
